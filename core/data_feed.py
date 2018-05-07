@@ -26,6 +26,9 @@ def get_instrument(instrument):
         elif p == 'quandl':
             db = instrument.quandl_database
             symbol = instrument.quandl_symbol
+        elif p == 'iqfeed':
+            db = instrument.exchange
+            symbol = instrument.iqfeed_symbol
         else:
             raise Exception('Unknown data provider string: %s' % p)
         p_data = _get_data(p, QuotesType.futures, db, symbol)

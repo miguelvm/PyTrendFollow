@@ -6,5 +6,8 @@ def get_provider(name):
     elif name == 'ib':
         from data.ib_provider import IBProvider
         return IBProvider()
+    elif name == 'iqfeed':
+        from data.iqfeed_provider import IQFeedProvider
+        return IQFeedProvider()
     else:
         raise Exception('Unknown data provider name: %s' % name)

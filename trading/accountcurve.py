@@ -15,7 +15,7 @@ class accountCurve():
     
     Calculates the positions we want to be in, based on the volatility target.
     """
-    def __init__(self, portfolio, capital=500000, positions=None, panama_prices=None, nofx=False, portfolio_weights = 1, **kw):
+    def __init__(self, portfolio, capital=500000, positions=None, panama_prices=None, nofx=False, vol_period=50, portfolio_weights = 1, **kw):
         self.portfolio = portfolio
         self.nofx = nofx
         self.weights = portfolio_weights
@@ -37,7 +37,8 @@ class accountCurve():
             self.positions = pd.DataFrame(positions)
 
         # Reduce all our positions so that they fit inside our target volatility when combined.
-        self.positions = self.positions.multiply(self.vol_norm(),axis=0)
+        self.vol_scaling = self.vol_norm(vol_period)
+        self.positions = self.positions.multiply(self.vol_scaling,axis=0)
 
         # If we run out of data (for example, if the data feed is stopped), hold position for 5 trading days and then close.
         # chunk_trades() is a function that is designed to reduce the amount of trading (and hence cost)
@@ -120,9 +121,9 @@ class accountCurve():
         spreads = pd.Series({v.name: v.spread for v in self.portfolio})
         return (self.positions.diff().shift(1).multiply(spreads * self.point_values() * self.rates())).fillna(0).abs()*-1
 
-    def vol_norm(self):
+    def vol_norm(self, vol_period=50):
         return (config.strategy.daily_volatility_target * self.capital / \
-                (self.returns().sum(axis=1).shift(2).ewm(span=50).std())).clip(0,1.5)
+                (self.returns().sum(axis=1).shift(2).ewm(span=vol_period).std())).clip(0,1.5)
 
     def panama_prices(self):
         if self.panama is not None:

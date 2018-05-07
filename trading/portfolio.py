@@ -32,9 +32,9 @@ class Portfolio(object):
     Portfolio is an object that is a group of instruments, with calculated positions based on the weighting and volatility target.
     """
 
-    def __init__(self, weights=1, instruments=None):
+    def __init__(self, weights=config.strategy.portfolio_weights, instruments=None):
         self.instruments = Instrument.load(instruments)
-        self.weights = pd.Series(config.strategy.portfolio_weights)
+        self.weights = pd.Series(weights)
         # remove weights for instruments that aren't in the portfolio
         self.weights = self.weights[self.weights.index.isin(instruments)]
         # instruments blacklisted due to validation errors

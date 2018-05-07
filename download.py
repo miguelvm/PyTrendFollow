@@ -99,8 +99,8 @@ def download_all(prov_name, qtype, recent, concurrent):
 
 if __name__ == "__main__":
     try:
-        if len(sys.argv) < 2 or sys.argv[1] not in ['quandl', 'ib']:
-            print('Usage: download.py [quandl|ib] [--recent] [--concurrent]')
+        if len(sys.argv) < 2 or sys.argv[1] not in ['quandl', 'ib', 'iqfeed']:
+            print('Usage: download.py [quandl|ib|iqfeed] [--recent] [--concurrent]')
             sys.exit(1)
         provider = sys.argv[1]
         recent = '--recent' in sys.argv
