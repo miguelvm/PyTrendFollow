@@ -54,6 +54,17 @@ currencies_definitions = [
         'ib_rate': lambda x: 1.0 / x,
     },
     {
+        'code': 'GBP' + base_currency,
+        'currency_data': ['ib', 'quandl'],
+        'quandl_database': 'CURRFX',
+        'quandl_symbol': 'GBP' + base_currency,
+        'quandl_rate': lambda x: x,
+        'ib_exchange': 'IDEALPRO',
+        'ib_symbol': base_currency,
+        'ib_currency': 'GBP',
+        'ib_rate': lambda x: 1.0 / x,
+    },
+    {
         'code': 'HKD' + base_currency,
         'currency_data': ['ib', 'quandl'],
         'quandl_database': 'CURRFX',

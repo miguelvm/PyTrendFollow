@@ -593,7 +593,8 @@ instruments_all = {
             'point_value': 10,
             'roll_day': 10,
             'spread': 1,
-        }, {
+        },
+        {
             'name': 'ftse',
             'fullname': 'FTSE 100 Index',
             'contract_data': ['quandl'],
@@ -610,7 +611,8 @@ instruments_all = {
             'spread': 0.5,
             # 'spot': Index('FTSE').close,
             'expiry': 15,
-        }, {
+        },
+        {
             'name': 'hsi',
             'fullname': 'Hang Seng Index',
             'contract_data': ['ib', 'quandl'],
