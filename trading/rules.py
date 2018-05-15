@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import scipy as sp
 from functools import partial
 from core.utility import norm_forecast, norm_vol
 
@@ -191,3 +192,42 @@ def breakout(inst, **kw):
 def _get_month(a):
     return int(str(a)[4:6])
 
+
+def slopes(inst, **kw):
+    """
+    Based on https://www.quantopian.com/posts/futures-trend-reversion-algo
+
+    :param inst:
+    :param kw:
+    :return:
+    """
+    # Get pricing data of continuous futures
+    prices = inst.panama_prices(**kw)
+
+    # Calculate daily returns for each continuous futures
+    all_returns = prices.pct_change()[1:]
+
+    def slope(rets):
+        prediction = 0
+
+        # Y-axis is the daily return
+        Y = np.array(rets)
+
+        # X-axis is -3, -2, -1, 0...
+        X = np.array(range(-len(Y) + 1, 1))
+
+        # Then, we get a and b where Y = a X + b
+        coef = sp.stats.linregress(X, Y)
+
+        # Return trend exists i.e. price momentum is accelerating with high probability
+        if (coef.pvalue < 0.15):
+
+            # Price momentumm is clear. Speed and acceleration is in same direction
+            if (coef.slope * coef.intercept > 0.):
+                # Then, predict the price trend should reverse
+                prediction = -coef.slope * 2250
+        return prediction
+
+    prediction = all_returns.rolling(window=63, min_periods=63).apply(slope)
+    #return norm_forecast(prediction.rename('slopes'))
+    return prediction.rename('slopes')

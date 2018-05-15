@@ -12,6 +12,9 @@ p_index = [v['name'] for v in config.instruments.instruments_all['index']]
 
 p_trade = [i for i in p_all if i not in (['dax', 'cac', 'aex', 'sp500', 'r2000', 'ftse', 'bitcoin'])]
 
+p_trade_equities = [i for i in p_all if i not in (['bitcoin'])]
+
+
 # Randomly split our portfolio into learning and testing sets
 x = p_trade
 random.shuffle(x)
