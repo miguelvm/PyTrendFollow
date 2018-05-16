@@ -144,6 +144,14 @@ def norm_forecast(a):
     """Normalize a forecast, such that it has an absolute mean of 10.
     WARNING: Insample lookahead bias"""
     return (a*10/bootstrap(a, lambda x: x.dropna().abs().mean())).clip(-20,20)
+    #return norm_forecast_rolling(a)
+
+
+def norm_forecast_rolling(a, period = 255):
+    #n_forecast = 20*a.rolling(window=period, min_periods=period).apply(lambda x: (x[-1] - np.mean(x)) / (np.max(x) - np.min(x)))
+    #return n_forecast
+    #return (a * 10 / a.rolling(window=period, min_periods=period).dropna().abs().mean())).clip(-20, 20)
+    return (10*a/a.abs().rolling(window=255).mean()).clip(-20,20)
 
 
 def ibcode_to_inst(ib_code):
@@ -179,6 +187,7 @@ def bootstrap(x, f):
         return np.nan
     from arch.bootstrap import StationaryBootstrap
     bs = StationaryBootstrap(50, x)
+    bs.seed(666)
     return bs.apply(f,100).mean()
 
 

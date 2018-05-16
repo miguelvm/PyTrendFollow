@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import scipy as sp
 from functools import partial
-from core.utility import norm_forecast, norm_vol
+from core.utility import norm_forecast, norm_forecast_rolling, norm_vol
 
 def pickleable_ewmac(d, x):
     """
@@ -229,5 +229,5 @@ def slopes(inst, **kw):
         return prediction
 
     prediction = all_returns.rolling(window=63, min_periods=63).apply(slope)
-    #return norm_forecast(prediction.rename('slopes'))
-    return prediction.rename('slopes')
+    return norm_forecast_rolling(prediction.rename('slopes'))
+
