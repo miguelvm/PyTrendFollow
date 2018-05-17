@@ -94,7 +94,7 @@ def carry_next(inst, debug=False, **kw):
     if f.sum() == 0:
         print(inst.name  + ' carry is zero')
     if debug==True:
-        return f.rename('carry_next'), current_prices, next_prices, td
+        return f.rename('carry_next'), current_prices, next_prices, td, carry
     # return f.mean().rename('carry_next')
     return f.interpolate().rolling(window=90).mean().rename('carry_next')
 
