@@ -225,7 +225,7 @@ def slopes(inst, **kw):
             # Price momentumm is clear. Speed and acceleration is in same direction
             if (coef.slope * coef.intercept > 0.):
                 # Then, predict the price trend should reverse
-                prediction = -coef.slope * 2250
+                prediction = coef.slope * 2250
         return prediction
 
     prediction = all_returns.rolling(window=63, min_periods=63).apply(slope)

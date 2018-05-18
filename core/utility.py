@@ -151,7 +151,7 @@ def norm_forecast_rolling(a, period = 3*255):
     #n_forecast = 20*a.rolling(window=period, min_periods=period).apply(lambda x: (x[-1] - np.mean(x)) / (np.max(x) - np.min(x)))
     #return n_forecast
     #return (a * 10 / a.rolling(window=period, min_periods=period).dropna().abs().mean())).clip(-20, 20)
-    return (10*a/a.dropna().abs().rolling(window=255).mean()).clip(-20,20)
+    return (10*a/a.dropna().abs().rolling(window=period).mean()).clip(-20,20)
 
 
 def ibcode_to_inst(ib_code):
